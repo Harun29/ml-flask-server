@@ -1004,20 +1004,26 @@ def get_prediction():
     global global_model_choice
 
     if global_model_choice is None:
+        print("Global model choice is not set!")
         load_default_model()
 
-    model_path = f'{global_model_choice}'
+    try:
+      model_path = f'{global_model_choice}'
 
-    # Load the model object which includes the model and the metrics
-    model_object = joblib.load(model_path)
-    model = model_object['model']  # Extract the trained model
-    r2_score = model_object.get('R2 Score', 'N/A')  # Extract R² score
-    rmse = model_object.get('RMSE', 'N/A')  # Extract RMSE
-    mae = model_object.get('MAE', 'N/A')  # Extract MAE
+      # Load the model object which includes the model and the metrics
+      model_object = joblib.load(model_path)
+      model = model_object['model']  # Extract the trained model
+      r2_score = model_object.get('R2 Score', 'N/A')  # Extract R² score
+      rmse = model_object.get('RMSE', 'N/A')  # Extract RMSE
+      mae = model_object.get('MAE', 'N/A')  # Extract MAE
 
-    model_data = pd.read_csv(f'uploads/{selected_brand}_data.csv')
-    print(global_model_choice)
-    print(selected_brand)
+      model_data = pd.read_csv(f'uploads/{selected_brand}_data.csv')
+      print(global_model_choice)
+      print(selected_brand)
+      
+    except Exception as e:
+        print(f"Error loading model: {str(e)}")
+        return jsonify({"error": "Failed to load model"}), 500
 
     try:
         data = request.json
@@ -1162,7 +1168,6 @@ def get_prediction():
         return jsonify({"error": f"Missing parameter: {str(e)}"}), 400
     except Exception as e:
         return jsonify({"error": str(e)}), 500
-
 
 
 @app.route("/hist_plot", methods=["GET"])
