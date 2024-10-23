@@ -48,6 +48,10 @@ logging.basicConfig(level=logging.DEBUG)
 api_key = os.getenv("OPENAI_API_KEY")
 client = OpenAI(api_key=api_key)
 
+@app.route('/')
+def home():
+    return "Hello from Railway!"
+
 @app.route('/get_ai_message', methods=['POST'])
 def get_ai_message():
     try:
@@ -1657,6 +1661,7 @@ def group_by():
         "grouped_data": grouped_data
     })
 
+load_default_model()  
+
 if __name__ == "__main__":  
-    load_default_model()  
     app.run(debug=True)
