@@ -25,22 +25,45 @@ pd.set_option("display.max_columns", None)
 app = Flask(__name__)
 CORS(app)
 
-UPLOAD_FOLDER = 'uploads'
+# Get the base directory where the script is running
+base_dir = os.path.abspath(os.path.dirname(__file__))
+
+# Define upload folder and create it if it doesn't exist
+UPLOAD_FOLDER = os.path.join(base_dir, 'uploads')
 os.makedirs(UPLOAD_FOLDER, exist_ok=True)
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
+
+# Global variables for DataFrame and model choice
 global_df = None
-global_data = pd.read_csv('uploads/volkswagen_data.csv')
-global_model_choice = None
 selected_brand = 'volkswagen'
-volkswagen_data=pd.read_csv('uploads/volkswagen_data.csv')
-audi_initial_data=pd.read_csv('uploads/audi_data.csv')
-default_model_path = f'flask-server/{selected_brand}_models/'
+
+# Use absolute paths to load CSV files
+global_data_path = os.path.join(UPLOAD_FOLDER, 'volkswagen_data.csv')
+audi_data_path = os.path.join(UPLOAD_FOLDER, 'audi_data.csv')
+
+# Read the data using absolute paths
+global_data = pd.read_csv(global_data_path)
+volkswagen_data = pd.read_csv(global_data_path)
+audi_initial_data = pd.read_csv(audi_data_path)
+
+# Set the default model path using the base directory and selected brand
+default_model_path = os.path.join(base_dir, f'{selected_brand}_models')
 default_model_prefix = 'xgboost_model'
+
+# Look for the model file in the model directory
+global_model_choice = None
 for file_name in os.listdir(default_model_path):
     if fnmatch.fnmatch(file_name, f'{default_model_prefix}*.joblib'):
         global_model_choice = os.path.join(default_model_path, file_name)
         break
+
+# Combine the Audi and Volkswagen data
 audi_vw_data = pd.concat([volkswagen_data, audi_initial_data], ignore_index=True)
+
+# Print statements to verify file paths during runtime
+print(f"Global data path: {global_data_path}")
+print(f"Audi data path: {audi_data_path}")
+print(f"Model choice path: {global_model_choice}")
 
 import logging
 logging.basicConfig(level=logging.DEBUG)
@@ -1011,13 +1034,13 @@ def get_prediction():
       model_path = f'{global_model_choice}'
 
       # Load the model object which includes the model and the metrics
-      model_object = joblib.load(model_path)
+      model_object = joblib.load(global_model_choice)
       model = model_object['model']  # Extract the trained model
       r2_score = model_object.get('R2 Score', 'N/A')  # Extract R² score
       rmse = model_object.get('RMSE', 'N/A')  # Extract RMSE
       mae = model_object.get('MAE', 'N/A')  # Extract MAE
 
-      model_data = pd.read_csv(f'uploads/{selected_brand}_data.csv')
+      model_data = pd.read_csv(f'flask-server/uploads/{selected_brand}_data.csv')
       print(global_model_choice)
       print(selected_brand)
       
