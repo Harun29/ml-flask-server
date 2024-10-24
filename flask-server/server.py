@@ -1195,7 +1195,7 @@ def get_prediction():
 
 @app.route("/hist_plot", methods=["GET"])
 def get_hist_plot_data():
-    global_data = pd.read_csv(f'uploads/{selected_brand}_data.csv')
+    global_data = pd.read_csv(f'flask-server/uploads/{selected_brand}_data.csv')
     try:
         if global_data is None:
             return jsonify({"error": "No data available. Please upload a CSV file first."}), 400
@@ -1220,7 +1220,7 @@ def get_hist_plot_data():
 
 @app.route("/model_ranking", methods=["GET"])
 def get_model_ranking_data():
-    global_data = pd.read_csv(f'uploads/{selected_brand}_data.csv')
+    global_data = pd.read_csv(f'flask-server/uploads/{selected_brand}_data.csv')
     try:
         if global_data is None or 'model' not in global_data.columns:
             return jsonify({"error": "No data available or 'model' column is missing."}), 400
@@ -1238,7 +1238,7 @@ def get_model_ranking_data():
 
 @app.route("/models_average_price", methods=['GET'])
 def get_models_average_price():
-    global_data = pd.read_csv(f'uploads/{selected_brand}_data.csv')
+    global_data = pd.read_csv(f'flask-server/uploads/{selected_brand}_data.csv')
     try:
         if global_data is None or 'model' not in global_data.columns:
             return jsonify({"error": "No data available or 'model' column is missing"}), 400
@@ -1260,7 +1260,7 @@ def get_models_average_price():
 
 @app.route("/get_models_price_box", methods=["GET"])
 def get_models_price_box_data():
-    global_data = pd.read_csv(f'uploads/{selected_brand}_data.csv')
+    global_data = pd.read_csv(f'flask-server/uploads/{selected_brand}_data.csv')
     try:
         if global_data is None:
             return jsonify({"error": "No data available. Please upload a CSV file first."}), 400
@@ -1315,7 +1315,7 @@ def get_models_price_box_data():
 
 @app.route("/type_minmax_price", methods=['GET'])
 def get_type_minmax_price():
-    global_data = pd.read_csv(f'uploads/{selected_brand}_data.csv')
+    global_data = pd.read_csv(f'flask-server/uploads/{selected_brand}_data.csv')
     try:
         if global_data is None or 'type' not in global_data.columns:
             return jsonify({"error": "No data available or 'type' column is missing"}), 400
@@ -1344,7 +1344,7 @@ def get_type_minmax_price():
 
 @app.route("/model_listings", methods=['GET'])
 def model_listings():
-    global_data = pd.read_csv(f'uploads/{selected_brand}_data.csv')
+    global_data = pd.read_csv(f'flask-server/uploads/{selected_brand}_data.csv')
     try:
         if global_data is None or 'type' not in global_data.columns or 'model' not in global_data.columns:
             return jsonify({"error": "No data available or 'type'/'model' column is missing"}), 400
@@ -1371,7 +1371,7 @@ def model_listings():
     
 @app.route("/get_line_plot_data", methods=['GET'])
 def get_line_plot_data():
-    global_data = pd.read_csv(f'uploads/{selected_brand}_data.csv')
+    global_data = pd.read_csv(f'flask-server/uploads/{selected_brand}_data.csv')
     try:
         if global_data is None or 'model' not in global_data.columns or 'price' not in global_data.columns:
             return jsonify({"error": "No data available or 'model'/'price' column is missing"}), 400
@@ -1412,7 +1412,7 @@ def get_line_plot_data():
 
 @app.route('/get_prices', methods=['GET'])
 def get_prices():
-    global_data = pd.read_csv(f'uploads/{selected_brand}_data.csv')
+    global_data = pd.read_csv(f'flask-server/uploads/{selected_brand}_data.csv')
     try:
         if global_data is None or 'price' not in global_data.columns:
             return jsonify({"error": "No data available or 'price' column is missing"}), 400
@@ -1435,7 +1435,7 @@ def get_prices():
 
 @app.route('/get_correlation_heatmap', methods=['GET'])
 def get_correlation_heatmap():
-    global_data = pd.read_csv(f'uploads/{selected_brand}_data.csv')
+    global_data = pd.read_csv(f'flask-server/uploads/{selected_brand}_data.csv')
     try:
         encoder = LabelEncoder()
         global_data['type'] = global_data['type'].map(vehicle_type_mapping)
@@ -1474,7 +1474,7 @@ def get_correlation_heatmap():
 
 @app.route('/get_scatterplot_data', methods=['GET'])
 def get_scatterplot_data():
-    global_data = pd.read_csv(f'uploads/{selected_brand}_data.csv')
+    global_data = pd.read_csv(f'flask-server/uploads/{selected_brand}_data.csv')
     try:
         if 'price' not in global_data.columns or 'year' not in global_data.columns or 'type' not in global_data.columns:
             return jsonify({"error": "'price', 'year', or 'type' column is missing"}), 400
@@ -1498,7 +1498,7 @@ def get_scatterplot_data():
 
 @app.route("/get_line_plot_data_prices", methods=['GET'])
 def get_line_plot_data_prices():
-    global_data = pd.read_csv(f'uploads/{selected_brand}_data.csv')
+    global_data = pd.read_csv(f'flask-server/uploads/{selected_brand}_data.csv')
     try:
         if global_data is None or 'type' not in global_data.columns or 'price' not in global_data.columns:
             return jsonify({"error": "No data available or 'type'/'price' column is missing"}), 400
@@ -1538,7 +1538,7 @@ def get_line_plot_data_prices():
 
 @app.route("/get_top5_models_avg_price_data", methods=["GET"])
 def get_top5_models_avg_price_data():
-    global_data = pd.read_csv(f'uploads/{selected_brand}_data.csv')
+    global_data = pd.read_csv(f'flask-server/uploads/{selected_brand}_data.csv')
     try:
         if global_data is None or 'model' not in global_data.columns:
             return jsonify({"error": "No data available or 'model' column is missing."}), 400
@@ -1580,7 +1580,7 @@ def generate_map_data():
 
 @app.route("/get_top5models_barplot_data", methods=['GET'])
 def get_top5models_barplot_data():
-    global_data = pd.read_csv(f'uploads/{selected_brand}_data.csv')
+    global_data = pd.read_csv(f'flask-server/uploads/{selected_brand}_data.csv')
     try:
         if global_data is None or 'model' not in global_data.columns or 'price' not in global_data.columns:
             return jsonify({"error": "No data available or 'model' column is missing."}), 400
@@ -1620,7 +1620,7 @@ def get_top5models_barplot_data():
 
 @app.route("/get_top5types_barplot_data", methods=['GET'])
 def get_top5types_barplot_data():
-    global_data = pd.read_csv(f'uploads/{selected_brand}_data.csv')
+    global_data = pd.read_csv(f'flask-server/uploads/{selected_brand}_data.csv')
     try:
         if global_data is None or 'type' not in global_data.columns or 'price' not in global_data.columns:
             return jsonify({"error": "No data available or 'model' column is missing."}), 400
@@ -1659,7 +1659,7 @@ def get_top5types_barplot_data():
 
 @app.route("/group_by", methods=["POST"])
 def group_by():
-    global_data = pd.read_csv(f'uploads/{selected_brand}_data.csv')
+    global_data = pd.read_csv(f'flask-server/uploads/{selected_brand}_data.csv')
 
 
     if global_data is None:
